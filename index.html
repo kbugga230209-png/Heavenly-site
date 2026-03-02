@@ -98,418 +98,6 @@
             0%, 100% { opacity: 0; }
             50% { opacity: 1; }
         }
-
-        /* Custom Cursor */
-        .cursor {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 1px solid rgba(232, 230, 227, 0.3);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, border-color 0.3s;
-            mix-blend-mode: difference;
-        }
-
-        .cursor.hovering {
-            width: 40px;
-            height: 40px;
-            border-color: rgba(139, 30, 30, 0.6);
-        }
-
-        .cursor-aura {
-            position: fixed;
-            width: 100px;
-            height: 100px;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(59, 10, 15, 0.15) 0%, transparent 70%);
-            transition: opacity 0.5s;
-        }
-
-        /* Canvas for WebGL */
-        #glCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Content Container */
-        .container {
-            position: relative;
-            z-index: 10;
-            opacity: 0;
-            animation: fadeIn 1.8s var(--ease-weighted) forwards;
-            transform-origin: center top; /* Set transform origin for scale shift */
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Breathing Background */
-        .breathing-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at 50% 50%, rgba(59, 10, 15, 0.08) 0%, transparent 60%);
-            z-index: 0;
-            animation: breathe 12s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { 
-                transform: scale(1);
-                opacity: 0.6;
-            }
-            50% { 
-                transform: scale(1.05);
-                opacity: 1;
-            }
-        }
-
-        /* Vertical Gradient Banding */
-        .gradient-banding {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent 0px,
-                transparent 2px,
-                rgba(255, 255, 255, 0.005) 2px,
-                rgba(255, 255, 255, 0.005) 4px
-            );
-        }
-
-        /* Sections */
-        section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 8vh 5vw;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.1s linear; /* For parallax/ripple effect */
-        }
-
-        /* Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 3;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            background: rgba(232, 230, 227, 0.15);
-            border-radius: 50%;
-            animation: particleFloat 20s linear infinite;
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% {
-                transform: translateY(-100vh) translateX(50px);
-                opacity: 0;
-            }
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            perspective: 1000px;
-            padding-top: 20vh;
-            padding-bottom: 20vh;
-        }
-
-        .hero-title {
-            font-size: clamp(4rem, 15vw, 12rem);
-            font-weight: 100;
-            letter-spacing: 0.5em;
-            margin-left: 0.5em;
-            opacity: 0;
-            filter: blur(20px);
-            animation: titleReveal 2s var(--ease-heavy) 0.5s forwards;
-            transform: translateZ(0);
-        }
-
-        @keyframes titleReveal {
-            to {
-                opacity: 1;
-                filter: blur(0);
-            }
-        }
-
-        .hero-tagline {
-            font-size: clamp(0.9rem, 2vw, 1.2rem);
-            color: var(--text-muted);
-            letter-spacing: 0.3em;
-            margin-top: 3vh;
-            opacity: 0;
-            animation: fadeUp 1.5s var(--ease-weighted) 1.5s forwards;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-ign {
-            margin-top: 8vh;
-            opacity: 0;
-            animation: fadeUp 1.5s var(--ease-weighted) 2s forwards;
-        }
-
-        .hero-ign span {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            letter-spacing: 0.15em;
-            margin: 0.5vh 0;
-        }
-
-        .hero-ign .value {
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
-
-        /* Section Titles */
-        .section-title {
-            font-size: clamp(2rem, 6vw, 4rem);
-            font-weight: 100;
-            letter-spacing: 0.3em;
-            margin-bottom: 4vh;
-            text-transform: uppercase;
-            position: relative;
-            cursor: default;
-            transition: all 0.3s var(--ease-weighted);
-        }
-
-        .section-title:hover {
-            color: rgba(139, 30, 30, 0.5);
-        }
-
-        .section-title::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--text-primary);
-            opacity: 0;
-            mix-blend-mode: overlay;
-            pointer-events: none;
-            transition: opacity 0.1s;
-        }
-
-        .section-title.glitch:hover::before {
-            animation: microGlitch 0.15s steps(2) forwards;
-        }
-
-        @keyframes microGlitch {
-            0% { opacity: 0; transform: translateX(0); }
-            25% { opacity: 0.3; transform: translateX(-2px); }
-            50% { opacity: 0; transform: translateX(2px); }
-            75% { opacity: 0.2; transform: translateX(-1px); }
-            100% { opacity: 0; transform: translateX(0); }
-        }
-
-        /* Content Paragraphs */
-        .content-block {
-            max-width: 600px;
-            text-align: center;
-        }
-
-        .content-block p {
-            font-size: clamp(1rem, 1.5vw, 1.1rem);
-            line-height: 2;
-            color: var(--text-muted);
-            letter-spacing: 0.05em;
-            margin-bottom: 2vh;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1.2s var(--ease-heavy), transform 1.2s var(--ease-heavy);
-        }
-
-        .content-block p.visible {
-            animation: revealText 1.2s var(--ease-heavy) forwards;
-        }
-
-        @keyframes revealText {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Identity Section */
-        .identity {
-            padding-bottom: 15vh;
-        }
-        .identity-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 3vh;
-            margin-bottom: 5vh;
-            opacity: 0;
-            animation: fadeUp 1.5s var(--ease-weighted) 0.5s forwards;
-        }
-
-        .identity-item {
-            text-align: center;
-        }
-
-        .identity-item span {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-bottom: 0.5vh;
-        }
-
-        .identity-item .value {
-            font-size: 1.1rem;
-            color: var(--text-primary);
-        }
-
-        /* Enter Button */
-        .enter-btn {
-            position: relative;
-            padding: 1.5vh 4vw;
-            background: transparent;
-            border: 1px solid rgba(139, 30, 30, 0.4);
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.9rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            cursor: none;
-            transition: all 0.35s var(--ease-weighted);
-            opacity: 0;
-            animation: fadeUp 1.5s var(--ease-weighted) 1s forwards;
-        }
-
-        .enter-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(139, 30, 30, 0.1);
-            opacity: 0;
-            transition: opacity 0.35s var(--ease-weighted);
-        }
-
-        .enter-btn:hover {
-            border-color: rgba(139, 30, 30, 0.8);
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(139, 30, 30, 0.15), inset 0 0 20px rgba(139, 30, 30, 0.1);
-        }
-
-        .enter-btn:hover::before {
-            opacity: 1;
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-            position: fixed;
-            bottom: 5vh;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            opacity: 0;
-            animation: fadeIn 2s var(--ease-weighted) 3s forwards, pulse 3s ease-in-out 5s infinite;
-        }
-
-        .scroll-indicator::before {
-            content: '';
-            display: block;
-            width: 1px;
-            height: 40px;
-            background: linear-gradient(to bottom, var(--text-muted), transparent);
-            animation: scrollLine 2s ease-in-out infinite;
-        }
-
-        @keyframes scrollLine {
-            0%, 100% { transform: scaleY(1); opacity: 0.3; }
-            50% { transform: scaleY(1.5); opacity: 0.8; }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-title {
-                letter-spacing: 0.2em;
-                margin-left: 0.2em;
-            }
-            
-            section {
-                padding: 5vh 5vw;
-            }
-            
-            .content-block {
-                max-width: 100%;
-            }
-        }
-
-        /* Section Transition Overlay */
-        .transition-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.8s var(--ease-heavy);
-        }
-
-        .transition-overlay.active {
-            opacity: 1;
-        }
     </style>
 </head>
 <body>
@@ -519,8 +107,8 @@
     <div class="gradient-banding"></div>
     <div class="grain"></div>
     <div class="vignette"></div>
-    <div class="chromatic"></div>
-    <div class="particles" id="particles"></div>
+    <div class="chromatic"></div> 
+        <div class="particles" id="particles"></div>
     
     <div class="cursor" id="cursor"></div>
     <div class="cursor-aura" id="cursorAura"></div>
@@ -563,8 +151,7 @@
                 <p>It’s structural dominance.</p>
             </div>
         </section>
-
-        <!-- Fluid Adaptation Section -->
+                <!-- Fluid Adaptation Section -->
         <section class="content" id="fluid">
             <h2 class="section-title glitch" data-hover>Fluid Adaptation</h2>
             <div class="content-block">
@@ -649,292 +236,227 @@
         `;
 
         function createShader(gl, type, source) {
-    const shader = gl.createShader(type);
-
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        console.error("Shader compile error:", gl.getShaderInfoLog(shader));
-        gl.deleteShader(shader);
-        return null;
-    }
-
-    return shader;
-}
-
-function createProgram(gl, vertexShader, fragmentShader) {
-    const program = gl.createProgram();
-
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        console.error("Program link error:", gl.getProgramInfoLog(program));
-        gl.deleteProgram(program);
-        return null;
-    }
-
-    return program;
-}
-
-let program = null;
-let uTime = null;
-let uResolution = null;
-
-if (gl) {
-    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-
-    if (vertexShader && fragmentShader) {
-        program = createProgram(gl, vertexShader, fragmentShader);
-
-        if (program) {
-            gl.useProgram(program);
-
-            const positionBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-            gl.bufferData(
-                gl.ARRAY_BUFFER,
-                new Float32Array([
-                    -1, -1,
-                     1, -1,
-                    -1,  1,
-                    -1,  1,
-                     1, -1,
-                     1,  1
-                ]),
-                gl.STATIC_DRAW
-            );
-
-            const aPosition = gl.getAttribLocation(program, "position");
-            gl.enableVertexAttribArray(aPosition);
-            gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
-
-            uTime = gl.getUniformLocation(program, "time");
-            uResolution = gl.getUniformLocation(program, "resolution");
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('Shader error: ' + gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader); // Clean up failed shader
+                return null;
+            }
+            
+            return shader;
         }
-    }
-}
+                let program = null;
+        if (gl) {
+            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+            const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+            
+            if (vertexShader && fragmentShader) {
+                program = gl.createProgram();
+                gl.attachShader(program, vertexShader);
+                gl.attachShader(program, fragmentShader);
+                gl.linkProgram(program);
+                gl.useProgram(program);
 
-function renderWebGL(now) {
-    if (!gl || !program) {
-        return;
-    }
+                const positionBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                    -1, -1, 1, -1, -1, 1,
+                    -1, 1, 1, -1, 1, 1
+                ]), gl.STATIC_DRAW);
 
-    gl.viewport(0, 0, canvas.width, canvas.height);
-
-    if (uTime) {
-        gl.uniform1f(uTime, now * 0.001);
-    }
-
-    if (uResolution) {
-        gl.uniform2f(uResolution, canvas.width, canvas.height);
-    }
-
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-    requestAnimationFrame(renderWebGL);
-}
-
-if (gl && program) {
-    requestAnimationFrame(renderWebGL);
-}
-
-/* ------------------------------ */
-/* Ambient particle dust          */
-/* ------------------------------ */
-
-const particlesContainer = document.getElementById("particles");
-
-if (particlesContainer) {
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement("div");
-        particle.className = "particle";
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.top = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 20}s`;
-        particle.style.animationDuration = `${15 + Math.random() * 10}s`;
-        particlesContainer.appendChild(particle);
-    }
-}
-
-/* ------------------------------ */
-/* Cursor + aura                 */
-/* ------------------------------ */
-
-const cursor = document.getElementById("cursor");
-const cursorAura = document.getElementById("cursorAura");
-
-const state = {
-    mouseX: window.innerWidth * 0.5,
-    mouseY: window.innerHeight * 0.5,
-    scrollY: 0,
-    ticking: false
-};
-
-document.addEventListener("mousemove", (e) => {
-    state.mouseX = e.clientX;
-    state.mouseY = e.clientY;
-
-    if (cursor) {
-        cursor.style.left = `${state.mouseX}px`;
-        cursor.style.top = `${state.mouseY}px`;
-    }
-
-    if (cursorAura) {
-        cursorAura.style.left = `${state.mouseX}px`;
-        cursorAura.style.top = `${state.mouseY}px`;
-    }
-
-    requestVisualUpdate();
-});
-
-const hoverElements = document.querySelectorAll("button, .section-title");
-
-hoverElements.forEach((el) => {
-    el.addEventListener("mouseenter", () => {
-        if (cursor) {
-            cursor.classList.add("hovering");
+                const positionLocation = gl.getAttribLocation(program, 'position');
+                gl.enableVertexAttribArray(positionLocation);
+                gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            }
         }
-    });
 
-    el.addEventListener("mouseleave", () => {
-        if (cursor) {
-            cursor.classList.remove("hovering");
+        let startTime = Date.now();
+        function renderWebGL() {
+            if (!gl || !program) return;
+            
+            const time = (Date.now() - startTime) / 1000;
+            const timeLocation = gl.getUniformLocation(program, 'time');
+            const resolutionLocation = gl.getUniformLocation(program, 'resolution');
+            
+            gl.uniform1f(timeLocation, time);
+            gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+            
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+            requestAnimationFrame(renderWebGL);
         }
-    });
-});
+        if (gl) {
+            renderWebGL();
+        }
 
-/* ------------------------------ */
-/* Sequential text reveal         */
-/* ------------------------------ */
 
-const contentBlocks = document.querySelectorAll(".content-block");
+        // Particle System
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
 
-function revealBlock(block) {
-    const paragraphs = block.querySelectorAll("p");
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        const cursorAura = document.getElementById('cursorAura');
 
-    paragraphs.forEach((p, index) => {
-        p.style.animationDelay = `${index * 180}ms`;
-        p.classList.add("visible");
-    });
-}
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorAura.style.left = e.clientX + 'px';
+            cursorAura.style.top = e.clientY + 'px';
+        });
 
-if ("IntersectionObserver" in window) {
-    const textObserver = new IntersectionObserver(
-        (entries, observer) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
-                    return;
+        // Cursor hover states
+        const hoverElements = document.querySelectorAll('button, .section-title');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hovering');
+                if (el.classList.contains('section-title')) {
+                    el.classList.add('glitch');
                 }
-
-                revealBlock(entry.target);
-                observer.unobserve(entry.target);
             });
-        },
-        {
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hovering');
+                if (el.classList.contains('section-title')) {
+                    el.classList.remove('glitch');
+                }
+            });
+        });
+
+        // Scroll-triggered animations and effects
+        const sections = document.querySelectorAll('section');
+        const contentBlocks = document.querySelectorAll('.content-block');
+        const container = document.querySelector('.container');
+        const breathingBg = document.querySelector('.breathing-bg');
+        const transitionOverlay = document.getElementById('transitionOverlay');
+        
+        let ticking = false;
+        let scrollY = 0;
+
+        const observerOptions = {
             root: null,
-            rootMargin: "0px 0px -10% 0px",
-            threshold: 0.08
-        }
-    );
+            rootMargin: '0px 0px -10% 0px',
+            threshold: 0.01
+        };
 
-    contentBlocks.forEach((block) => textObserver.observe(block));
-} else {
-    contentBlocks.forEach((block) => revealBlock(block));
-}
-
-/* ------------------------------ */
-/* Scroll depth + parallax        */
-/* ------------------------------ */
-
-const container = document.querySelector(".container");
-const sections = document.querySelectorAll("section");
-const breathingBg = document.querySelector(".breathing-bg");
-const transitionOverlay = document.getElementById("transitionOverlay");
-
-function clamp(value, min, max) {
-    return Math.min(max, Math.max(min, value));
-}
-
-function updateVisuals() {
-    state.scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-
-    const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
-    const progress = clamp(state.scrollY / maxScroll, 0, 1);
-
-    if (container) {
-        const depthScale = clamp(1 - progress * 0.02, 0.98, 1);
-        container.style.transform = `scale(${depthScale})`;
-    }
-
-    sections.forEach((section, index) => {
-        const parallax = state.scrollY * (0.02 + index * 0.002);
-        section.style.transform = `translateY(${-parallax}px)`;
-    });
-
-    if (breathingBg) {
-        breathingBg.style.animationDuration = `${12 - progress * 3}s`;
-    }
-
-    if (cursorAura) {
-        const cx = window.innerWidth * 0.5;
-        const cy = window.innerHeight * 0.5;
-        const dx = state.mouseX - cx;
-        const dy = state.mouseY - cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const maxDist = Math.sqrt(cx * cx + cy * cy);
-        const proximity = 1 - clamp(dist / maxDist, 0, 1);
-
-        cursorAura.style.opacity = `${0.12 + proximity * 0.35}`;
-    }
-
-    state.ticking = false;
-}
-
-function requestVisualUpdate() {
-    if (state.ticking) {
-        return;
-    }
-
-    state.ticking = true;
-    requestAnimationFrame(updateVisuals);
-}
-
-window.addEventListener("scroll", requestVisualUpdate, { passive: true });
-window.addEventListener("resize", () => {
-    resizeCanvas();
-    requestVisualUpdate();
-});
-
-/* ------------------------------ */
-/* Button transition              */
-/* ------------------------------ */
-
-const enterBtn = document.querySelector(".enter-btn");
-
-if (enterBtn && transitionOverlay) {
-    enterBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        transitionOverlay.classList.add("active");
-
-        setTimeout(() => {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
+        const textObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const paragraphs = entry.target.querySelectorAll('p');
+                    paragraphs.forEach((p, i) => {
+                        // Set specific delay based on index for sequential reveal
+                        p.style.animationDelay = (i * 200) + 'ms'; 
+                        p.classList.add('visible');
+                    });
+                    textObserver.unobserve(entry.target); 
+                }
             });
+        }, observerOptions);
 
+        contentBlocks.forEach(block => {
+            textObserver.observe(block);
+        });
+
+        function updateVisuals(e) {
+            scrollY = window.pageYOffset;
+            const scrollHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollProgress = Math.min(1, Math.max(0, scrollY / scrollHeight));
+            
+            // 3D Depth Illusion (Scale Shift)
+            const depthScale = 1 - (scrollProgress * 0.005); 
+            container.style.transform = `scale(${Math.max(0.98, depthScale)})`;
+
+
+            // Micro Parallax & Distortion Ripple (Applied via transform on sections)
+            sections.forEach((section) => {
+                const parallaxFactor = (section.dataset.parallax === 'true' ? 0.5 : 0.8) * (section.id === 'hero' ? 0.5 : 1);
+                const yPos = scrollY * (1 - parallaxFactor);
+
+                // Ripple: Apply a tiny rotation based on scroll proximity to section center
+                const rect = section.getBoundingClientRect();
+                const sectionMidpoint = rect.top + rect.height / 2;
+                const viewportCenter = window.innerHeight / 2;
+                const diff = sectionMidpoint - viewportCenter;
+                
+                // Rotation proportional to distance from center, damped heavily
+                const rotX = Math.sin(diff * 0.0005) * 0.5; // Max rotation very small
+                
+                section.style.transform = `translateY(${-yPos * 0.1}px) rotateX(${rotX}deg)`;
+            });
+            
+            // Breathing Animation Intensity based on scroll
+            breathingBg.style.animationDuration = (12 - scrollProgress * 4) + 's';
+
+            // Cursor Aura proximity reaction
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const distToCenter = Math.sqrt((e.clientX - centerX)**2 + (e.clientY - centerY)**2);
+            const maxDist = Math.sqrt(centerX**2 + centerY**2);
+            const proximityRatio = 1 - (distToCenter / maxDist);
+            
+            cursorAura.style.opacity = 0.1 + (proximityRatio * 0.5);
+
+
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            scrollY = window.pageYOffset;
+            if (!ticking) {
+                requestAnimationFrame((e) => updateVisuals(e || window.event));
+                ticking = true;
+            }
+        });
+        
+        // Re-run on mouse move for real-time cursor aura update
+        document.addEventListener('mousemove', (e) => {
+            if (!ticking) {
+                requestAnimationFrame(() => updateVisuals(e));
+                ticking = true;
+            }
+        });
+
+        // --- INITIALIZATION ---
+
+        // 1. Force Hero text visibility after initial fade-in
+        setTimeout(() => {
+            document.querySelector('.hero-tagline').style.opacity = 1;
+            document.querySelector('.hero-tagline').style.transform = 'translateY(0)';
+            document.querySelectorAll('.hero-ign span').forEach((el, i) => {
+                setTimeout(() => {
+                    el.style.opacity = 1;
+                    el.style.transform = 'translateY(0)';
+                }, i * 200);
+            });
+        }, 2000); // After 1.8s fade-in + 0.2s buffer
+
+        // 2. Initial visual update for parallax and cursor on load
+        updateVisuals({clientX: window.innerWidth/2, clientY: window.innerHeight/2}); // Initial event simulation
+
+        // 3. CTA Action (Simulated transition)
+        document.querySelector('.enter-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            transitionOverlay.classList.add('active');
+            
             setTimeout(() => {
-                transitionOverlay.classList.remove("active");
-            }, 850);
-        }, 450);
-    });
-}
-
-/* ------------------------------ */
-/* Initial pass                   */
-/* ------------------------------ */
-
-requestVisualUpdate();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'auto'
+                });
+                setTimeout(() => {
+                    transitionOverlay.classList.remove('active');
+                }, 900);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
