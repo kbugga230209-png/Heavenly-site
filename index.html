@@ -4,138 +4,215 @@
 <meta charset="UTF-8">
 <title>Heavenly</title>
 
-<meta property="og:title" content="Heavenly — You’re already inside it." />
-<meta property="og:description" content="IGN: LigmaFire | You won’t see it coming." />
+<meta property="og:title" content="Heavenly — You're already inside it." />
+<meta property="og:description" content="IGN: LigmaFire | Presence over noise." />
 <meta property="og:image" content="https://raw.githubusercontent.com/kbugga230209/Heavenly-site/main/kbugga230209.png" />
 <meta property="og:type" content="website" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
 <style>
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+:root{
+  --bg:#0C0F15;
+  --deep:#3B0A0F;
+  --text:#ECECEC;
+  --muted:#9A9A9A;
 }
 
+*{margin:0;padding:0;box-sizing:border-box;}
+
 body{
-    background:#0C0F15;
-    color:white;
-    font-family:'Cormorant Garamond', serif;
-    line-height:1.6;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  overflow-x:hidden;
+}
+
+/* Atmospheric breathing */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at 50% 40%, rgba(59,10,15,.35), transparent 70%);
+  animation:breathe 10s ease-in-out infinite;
+  pointer-events:none;
+  z-index:0;
+}
+
+@keyframes breathe{
+  0%,100%{opacity:.25}
+  50%{opacity:.45}
+}
+
+/* Grain */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity:.04;
+  pointer-events:none;
+  z-index:1;
+}
+
+/* Cursor aura */
+.cursor{
+  width:260px;
+  height:260px;
+  position:fixed;
+  pointer-events:none;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(59,10,15,.25), transparent 70%);
+  transform:translate(-50%,-50%);
+  z-index:3;
+  mix-blend-mode:screen;
 }
 
 section{
-    padding:80px 6%;
-    max-width:900px;
-    margin:auto;
+  min-height:100vh;
+  padding:140px 15%;
+  position:relative;
+  z-index:2;
 }
 
-.center{
-    text-align:center;
+.hero{
+  text-align:center;
 }
 
 h1{
-    font-size:60px;
-    letter-spacing:6px;
-    margin-bottom:20px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(60px,9vw,110px);
+  letter-spacing:12px;
+  margin-bottom:30px;
 }
 
 h2{
-    font-size:28px;
-    letter-spacing:4px;
-    opacity:0.8;
-    margin-bottom:40px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,5vw,52px);
+  letter-spacing:6px;
+  margin-bottom:50px;
 }
 
 p{
-    font-family:'Inter', sans-serif;
-    font-size:18px;
-    opacity:0.75;
-    margin:20px 0;
+  max-width:720px;
+  color:var(--muted);
+  font-size:clamp(18px,1.4vw,20px);
+  line-height:1.9;
+  margin-bottom:28px;
+  opacity:0;
+  transform:translateY(40px);
 }
 
-.divider{
-    height:1px;
-    background:#222;
-    margin:60px 0;
-}
-
-.label{
-    font-family:'Inter', sans-serif;
-    font-size:12px;
-    letter-spacing:5px;
-    opacity:0.4;
-    margin-bottom:20px;
+.identity{
+  text-align:center;
 }
 
 .button{
-    display:inline-block;
-    margin-top:30px;
-    padding:12px 28px;
-    border:1px solid #444;
-    text-decoration:none;
-    color:white;
-    font-family:'Inter', sans-serif;
-    letter-spacing:3px;
-    font-size:12px;
-    transition:0.3s;
+  display:inline-block;
+  margin-top:40px;
+  padding:14px 48px;
+  border:1px solid rgba(59,10,15,.8);
+  letter-spacing:4px;
+  text-decoration:none;
+  color:var(--text);
+  transition:all .4s ease;
 }
 
 .button:hover{
-    border-color:#777;
+  background:rgba(59,10,15,.15);
+  transform:translateY(-2px);
 }
-
 </style>
 </head>
 
 <body>
 
-<section class="center">
-    <h1>HEAVENLY</h1>
-    <p>You’re already inside it.</p>
-    <p>IGN — LigmaFire</p>
-</section>
+<div class="cursor"></div>
 
-<div class="divider"></div>
+<section class="hero">
+  <h1>HEAVENLY</h1>
+  <p>You're already inside it.</p>
+  <p>IGN — LigmaFire</p>
+  <p>Playstyle — Undefined</p>
+</section>
 
 <section>
-    <div class="label">STATUS</div>
-
-    <h2>Unknown Playstyle</h2>
-
-    <p>
-    You won’t lose to mechanics.
-    </p>
-
-    <p>
-    You’ll lose trying to predict them.
-    </p>
-
-    <p>
-    Pressure builds before contact.
-    </p>
-
-    <p>
-    By the time you react —
-    the fight is already decided.
-    </p>
+  <h2>PRESSURE</h2>
+  <p>You won’t lose to mechanics.</p>
+  <p>You’ll lose to assumption.</p>
+  <p>He studies entry points.</p>
+  <p>Every action narrows your options.</p>
+  <p>Spacing. Timing. Micro-adjustments.</p>
+  <p>It already resolved.</p>
 </section>
-
-<div class="divider"></div>
 
 <section>
-    <div class="label">IDENTITY</div>
-
-    <p>Real Name — Kush Bugga</p>
-    <p>Discord — itz_crime_9</p>
-    <p>Alias — Heavenly</p>
-
-    <a class="button" href="#">ENTER THE REALM</a>
+  <h2>CONTROL</h2>
+  <p>You believe you're adapting.</p>
+  <p>You aren’t.</p>
+  <p>The tempo fractures.</p>
+  <p>Your rhythm collapses before your aim does.</p>
+  <p>This isn’t about speed.</p>
+  <p>It’s about removing certainty.</p>
 </section>
+
+<section class="identity">
+  <h2>IDENTITY</h2>
+  <p>Alias — Heavenly</p>
+  <p>Real Name — Kush Bugga</p>
+  <p>Discord — itz_crime_9</p>
+  <a href="#" class="button">ENTER THE REALM</a>
+</section>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* Cursor */
+const cursor=document.querySelector(".cursor");
+document.addEventListener("mousemove",e=>{
+  gsap.to(cursor,{
+    x:e.clientX,
+    y:e.clientY,
+    duration:.3,
+    ease:"power2.out"
+  });
+});
+
+/* Cinematic intro */
+gsap.from("h1",{
+  opacity:0,
+  y:80,
+  duration:2,
+  ease:"power4.out"
+});
+
+/* Scroll reveal */
+gsap.utils.toArray("p").forEach((el)=>{
+  gsap.to(el,{
+    opacity:1,
+    y:0,
+    duration:1.6,
+    ease:"power3.out",
+    scrollTrigger:{
+      trigger:el,
+      start:"top 85%"
+    }
+  });
+});
+
+/* Parallax depth */
+gsap.to("body::before",{
+  opacity:.5,
+  duration:10,
+  repeat:-1,
+  yoyo:true
+});
+</script>
 
 </body>
 </html>
