@@ -3,459 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEAVENLY</title>
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Heavenly - You're already inside it." />
-    <meta property="og:description" content="IGN: LigmaFire | You won't see it coming." />
-    <meta property="og:image" content="https://raw.githubusercontent.com/kbugga230209/Heavenly-site/main/kbugga230209.png" />
-    <meta property="og:type" content="website" />
-
+    <title>HEAVENLY - Simplified</title>
     <style>
         :root {
-            --bg-primary: #0C0F15;
-            --bg-crimson: #3B0A0F;
-            --text-primary: #E8E6E3;
-            --text-muted: #6B6B6B;
-            --accent-crimson: #8B1E1E;
-            --ease-weighted: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* power3 approximation */
-            --ease-heavy: cubic-bezier(0.22, 1, 0.36, 1); /* power4 approximation */
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            --bg-primary: #0a0a0e;
+            --text-primary: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --accent: #a83232;
+            --ease-fast: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            font-family: 'Courier New', Courier, monospace;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            overflow-x: hidden;
-            cursor: none;
-        }
-
-        /* Grain Overlay */
-        .grain {
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0.035;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            animation: grainMove 0.5s steps(10) infinite;
-        }
-
-        @keyframes grainMove {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-1%, -1%); }
-            20% { transform: translate(1%, 1%); }
-            30% { transform: translate(-1%, 1%); }
-            40% { transform: translate(1%, -1%); }
-            50% { transform: translate(-1%, 0%); }
-            60% { transform: translate(1%, 0%); }
-            70% { transform: translate(0%, 1%); }
-            80% { transform: translate(0%, -1%); }
-            90% { transform: translate(1%, 1%); }
-        }
-
-        /* Vignette */
-        .vignette {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
-        }
-
-        /* Chromatic Aberration Layer */
-        .chromatic {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 998;
-            mix-blend-mode: screen;
+            line-height: 1.6;
+            padding: 20px;
             opacity: 0;
-            background: 
-                linear-gradient(90deg, rgba(255,0,0,0.01) 0%, transparent 50%, rgba(0,0,255,0.01) 100%);
-            animation: chromaticPulse 8s ease-in-out infinite;
+            transition: opacity 1.5s var(--ease-fast);
         }
 
-        @keyframes chromaticPulse {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 50px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 2px;
+            background: var(--accent);
+            margin: 5px auto 0;
+        }
+
+        .content-block p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            transition: opacity 0.5s var(--ease-fast), transform 0.5s var(--ease-fast);
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .content-block p.visible {
+            opacity: 1;
+            transform: translateY(0);
+            color: var(--text-primary); /* Text changes color when revealed */
+        }
+
+        .identity-grid {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .identity-item {
+            margin: 10px;
+            text-align: center;
+        }
+
+        .identity-item .label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .identity-item .value {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .enter-btn {
+            padding: 10px 25px;
+            background: var(--accent);
+            border: none;
+            color: var(--bg-primary);
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s var(--ease-fast), transform 0.1s;
+            margin-top: 30px;
+        }
+
+        .enter-btn:hover {
+            background: #c44848;
+            transform: translateY(-1px);
         }
     </style>
 </head>
 <body>
-    <canvas id="glCanvas"></canvas>
-    
-    <div class="breathing-bg"></div>
-    <div class="gradient-banding"></div>
-    <div class="grain"></div>
-    <div class="vignette"></div>
-    <div class="chromatic"></div> 
-        <div class="particles" id="particles"></div>
-    
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-aura" id="cursorAura"></div>
-    
-    <div class="transition-overlay" id="transitionOverlay"></div>
-    
     <div class="container">
         <!-- Hero Section -->
-        <section class="hero" id="hero">
+        <section class="hero">
             <h1 class="hero-title">HEAVENLY</h1>
             <p class="hero-tagline">You're already inside it.</p>
-            <div class="hero-ign">
-                <span>IGN <span class="value">LigmaFire</span></span>
-                <span>Playstyle <span class="value">Undefined</span></span>
+            <div class="identity-grid" style="margin-bottom: 20px;">
+                <div class="identity-item">
+                    <span class="label">IGN</span>
+                    <span class="value">LigmaFire</span>
+                </div>
+                <div class="identity-item">
+                    <span class="label">Playstyle</span>
+                    <span class="value">Undefined</span>
+                </div>
             </div>
+            <button class="enter-btn">ENTER</button>
         </section>
 
-        <!-- Pressure Section -->
-        <section class="content" id="pressure">
-            <h2 class="section-title glitch" data-hover>Pressure</h2>
-            <div class="content-block">
+        <!-- Content Sections (Simplified Blocks) -->
+        <section class="pressure">
+            <h2 class="section-title">Pressure</h2>
+            <div class="content-block" id="pressure-block">
                 <p>You won’t lose to mechanics.</p>
                 <p>You’ll lose to assumption.</p>
-                <p>He studies entry points.</p>
                 <p>Every action narrows your options.</p>
-                <p>Spacing. Timing. Micro-adjustments.</p>
-                <p>The outcome settles before the exchange begins.</p>
             </div>
         </section>
 
-        <!-- Control Section -->
-        <section class="content" id="control">
-            <h2 class="section-title glitch" data-hover>Control</h2>
-            <div class="content-block">
+        <section class="control">
+            <h2 class="section-title">Control</h2>
+            <div class="content-block" id="control-block">
                 <p>You believe you're adapting.</p>
                 <p>You aren’t.</p>
-                <p>The tempo fractures.</p>
-                <p>Your rhythm collapses before your aim does.</p>
-                <p>This isn’t speed.</p>
                 <p>It’s structural dominance.</p>
             </div>
         </section>
-                <!-- Fluid Adaptation Section -->
-        <section class="content" id="fluid">
-            <h2 class="section-title glitch" data-hover>Fluid Adaptation</h2>
-            <div class="content-block">
+
+        <section class="fluid">
+            <h2 class="section-title">Fluid Adaptation</h2>
+            <div class="content-block" id="fluid-block">
                 <p>No visible adjustment.</p>
                 <p>Only recalibration.</p>
-                <p>Frame by frame.</p>
-                <p>You won’t see the shift.</p>
-                <p>You’ll feel it.</p>
-                <p>And when you recognize it —</p>
-                <p>the margin is gone.</p>
+                <p>The margin is gone.</p>
             </div>
         </section>
 
         <!-- Identity Section -->
-        <section class="identity" id="identity">
-            <h2 class="section-title" data-hover>Identity</h2>
+        <section class="identity-final">
+            <h2 class="section-title">Identity</h2>
             <div class="identity-grid">
                 <div class="identity-item">
-                    <span>Alias</span>
+                    <span class="label">Alias</span>
                     <span class="value">Heavenly</span>
                 </div>
                 <div class="identity-item">
-                    <span>Real Name</span>
+                    <span class="label">Real Name</span>
                     <span class="value">Kush Bugga</span>
                 </div>
                 <div class="identity-item">
-                    <span>Discord</span>
+                    <span class="label">Discord</span>
                     <span class="value">itz_crime_9</span>
                 </div>
             </div>
-            <button class="enter-btn">ENTER THE REALM</button>
         </section>
     </div>
-    
-    <div class="scroll-indicator"></div>
 
     <script>
-        // WebGL Shader Setup
-        const canvas = document.getElementById('glCanvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            if (gl) {
-                gl.viewport(0, 0, canvas.width, canvas.height);
-            }
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        const vertexShaderSource = `
-            attribute vec2 position;
-            void main() {
-                gl_Position = vec4(position, 0.0, 1.0);
-            }
-        `;
-
-        const fragmentShaderSource = `
-            precision mediump float;
-            uniform float time;
-            uniform vec2 resolution;
+        document.addEventListener('DOMContentLoaded', () => {
+            // Make the body visible now that CSS is loaded
+            document.body.style.opacity = 1;
             
-            void main() {
-                vec2 uv = gl_FragCoord.xy / resolution;
-                float dist = distance(uv, vec2(0.5));
-                
-                /* Subtle wave distortion based on distance and time, minimal influence */
-                float wave = sin(dist * 15.0 - time * 0.5) * 0.0005; 
-                
-                /* Chromatic shift simulation using color offsets */
-                vec3 color = vec3(
-                    0.02 * wave + 0.01,
-                    0.01,
-                    -0.02 * wave + 0.01
-                );
-                
-                vec3 finalColor = mix(vec3(0.02, 0.02, 0.03), color, 0.5);
-
-                gl_FragColor = vec4(finalColor, 1.0);
-            }
-        `;
-
-        function createShader(gl, type, source) {
-            const shader = gl.createShader(type);
-            gl.shaderSource(shader, source);
-            gl.compileShader(shader);
+            const contentBlocks = document.querySelectorAll('.content-block');
             
-            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                console.error('Shader error: ' + gl.getShaderInfoLog(shader));
-                gl.deleteShader(shader); // Clean up failed shader
-                return null;
-            }
-            
-            return shader;
-        }
-                let program = null;
-        if (gl) {
-            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-            const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-            
-            if (vertexShader && fragmentShader) {
-                program = gl.createProgram();
-                gl.attachShader(program, vertexShader);
-                gl.attachShader(program, fragmentShader);
-                gl.linkProgram(program);
-                gl.useProgram(program);
-
-                const positionBuffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-                    -1, -1, 1, -1, -1, 1,
-                    -1, 1, 1, -1, 1, 1
-                ]), gl.STATIC_DRAW);
-
-                const positionLocation = gl.getAttribLocation(program, 'position');
-                gl.enableVertexAttribArray(positionLocation);
-                gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-            }
-        }
-
-        let startTime = Date.now();
-        function renderWebGL() {
-            if (!gl || !program) return;
-            
-            const time = (Date.now() - startTime) / 1000;
-            const timeLocation = gl.getUniformLocation(program, 'time');
-            const resolutionLocation = gl.getUniformLocation(program, 'resolution');
-            
-            gl.uniform1f(timeLocation, time);
-            gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-            
-            gl.drawArrays(gl.TRIANGLES, 0, 6);
-            requestAnimationFrame(renderWebGL);
-        }
-        if (gl) {
-            renderWebGL();
-        }
-
-
-        // Particle System
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 20 + 's';
-            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-            particlesContainer.appendChild(particle);
-        }
-
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        const cursorAura = document.getElementById('cursorAura');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            cursorAura.style.left = e.clientX + 'px';
-            cursorAura.style.top = e.clientY + 'px';
-        });
-
-        // Cursor hover states
-        const hoverElements = document.querySelectorAll('button, .section-title');
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.classList.add('hovering');
-                if (el.classList.contains('section-title')) {
-                    el.classList.add('glitch');
-                }
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hovering');
-                if (el.classList.contains('section-title')) {
-                    el.classList.remove('glitch');
-                }
-            });
-        });
-
-        // Scroll-triggered animations and effects
-        const sections = document.querySelectorAll('section');
-        const contentBlocks = document.querySelectorAll('.content-block');
-        const container = document.querySelector('.container');
-        const breathingBg = document.querySelector('.breathing-bg');
-        const transitionOverlay = document.getElementById('transitionOverlay');
-        
-        let ticking = false;
-        let scrollY = 0;
-
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px 0px -10% 0px',
-            threshold: 0.01
-        };
-
-        const textObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const paragraphs = entry.target.querySelectorAll('p');
-                    paragraphs.forEach((p, i) => {
-                        // Set specific delay based on index for sequential reveal
-                        p.style.animationDelay = (i * 200) + 'ms'; 
+            contentBlocks.forEach(block => {
+                const paragraphs = block.querySelectorAll('p');
+                paragraphs.forEach((p, i) => {
+                    // Reveal paragraphs sequentially with minimal delay (no IntersectionObserver needed)
+                    setTimeout(() => {
                         p.classList.add('visible');
-                    });
-                    textObserver.unobserve(entry.target); 
-                }
-            });
-        }, observerOptions);
-
-        contentBlocks.forEach(block => {
-            textObserver.observe(block);
-        });
-
-        function updateVisuals(e) {
-            scrollY = window.pageYOffset;
-            const scrollHeight = document.body.scrollHeight - window.innerHeight;
-            const scrollProgress = Math.min(1, Math.max(0, scrollY / scrollHeight));
-            
-            // 3D Depth Illusion (Scale Shift)
-            const depthScale = 1 - (scrollProgress * 0.005); 
-            container.style.transform = `scale(${Math.max(0.98, depthScale)})`;
-
-
-            // Micro Parallax & Distortion Ripple (Applied via transform on sections)
-            sections.forEach((section) => {
-                const parallaxFactor = (section.dataset.parallax === 'true' ? 0.5 : 0.8) * (section.id === 'hero' ? 0.5 : 1);
-                const yPos = scrollY * (1 - parallaxFactor);
-
-                // Ripple: Apply a tiny rotation based on scroll proximity to section center
-                const rect = section.getBoundingClientRect();
-                const sectionMidpoint = rect.top + rect.height / 2;
-                const viewportCenter = window.innerHeight / 2;
-                const diff = sectionMidpoint - viewportCenter;
-                
-                // Rotation proportional to distance from center, damped heavily
-                const rotX = Math.sin(diff * 0.0005) * 0.5; // Max rotation very small
-                
-                section.style.transform = `translateY(${-yPos * 0.1}px) rotateX(${rotX}deg)`;
-            });
-            
-            // Breathing Animation Intensity based on scroll
-            breathingBg.style.animationDuration = (12 - scrollProgress * 4) + 's';
-
-            // Cursor Aura proximity reaction
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            const distToCenter = Math.sqrt((e.clientX - centerX)**2 + (e.clientY - centerY)**2);
-            const maxDist = Math.sqrt(centerX**2 + centerY**2);
-            const proximityRatio = 1 - (distToCenter / maxDist);
-            
-            cursorAura.style.opacity = 0.1 + (proximityRatio * 0.5);
-
-
-            ticking = false;
-        }
-
-        window.addEventListener('scroll', () => {
-            scrollY = window.pageYOffset;
-            if (!ticking) {
-                requestAnimationFrame((e) => updateVisuals(e || window.event));
-                ticking = true;
-            }
-        });
-        
-        // Re-run on mouse move for real-time cursor aura update
-        document.addEventListener('mousemove', (e) => {
-            if (!ticking) {
-                requestAnimationFrame(() => updateVisuals(e));
-                ticking = true;
-            }
-        });
-
-        // --- INITIALIZATION ---
-
-        // 1. Force Hero text visibility after initial fade-in
-        setTimeout(() => {
-            document.querySelector('.hero-tagline').style.opacity = 1;
-            document.querySelector('.hero-tagline').style.transform = 'translateY(0)';
-            document.querySelectorAll('.hero-ign span').forEach((el, i) => {
-                setTimeout(() => {
-                    el.style.opacity = 1;
-                    el.style.transform = 'translateY(0)';
-                }, i * 200);
-            });
-        }, 2000); // After 1.8s fade-in + 0.2s buffer
-
-        // 2. Initial visual update for parallax and cursor on load
-        updateVisuals({clientX: window.innerWidth/2, clientY: window.innerHeight/2}); // Initial event simulation
-
-        // 3. CTA Action (Simulated transition)
-        document.querySelector('.enter-btn').addEventListener('click', (e) => {
-            e.preventDefault();
-            transitionOverlay.classList.add('active');
-            
-            setTimeout(() => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'auto'
+                    }, 100 + (i * 150)); // Start revealing 100ms after load + 150ms step
                 });
-                setTimeout(() => {
-                    transitionOverlay.classList.remove('active');
-                }, 900);
-            }, 500);
+            });
         });
     </script>
 </body>
