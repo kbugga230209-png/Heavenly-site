@@ -1,218 +1,628 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Heavenly</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEAVENLY</title>
+    <!-- Open Graph Meta Tags based on the spirit of the image content -->
+    <meta property="og:title" content="Heavenly - You're already inside it." />
+    <meta property="og:description" content="IGN: LigmaFire | You won't see it coming." />
+    <meta property="og:image" content="https://raw.githubusercontent.com/kbugga230209/Heavenly-site/main/kbugga230209.png" />
+    <meta property="og:type" content="website" />
 
-<meta property="og:title" content="Heavenly — You're already inside it." />
-<meta property="og:description" content="IGN: LigmaFire | Presence over noise." />
-<meta property="og:image" content="https://raw.githubusercontent.com/kbugga230209/Heavenly-site/main/kbugga230209.png" />
-<meta property="og:type" content="website" />
+    <style>
+        :root {
+            --bg-primary: #0C0F15;
+            --bg-crimson: #3B0A0F;
+            --text-primary: #E8E6E3;
+            --text-muted: #6B6B6B;
+            --accent-crimson: #8B1E1E;
+            --ease-weighted: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* power3 approximation */
+            --ease-heavy: cubic-bezier(0.22, 1, 0.36, 1); /* power4 approximation */
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+        html {
+            scroll-behavior: smooth;
+        }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+        body {
+            font-family: 'Courier New', Courier, monospace; /* Keeping monospace for engineered feel */
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+        }
 
-<style>
-:root{
-  --bg:#0C0F15;
-  --deep:#3B0A0F;
-  --text:#ECECEC;
-  --muted:#9A9A9A;
-}
+        /* Grain Overlay */
+        .grain {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            animation: grainMove 0.5s steps(10) infinite;
+        }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+        @keyframes grainMove {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-1%, -1%); }
+            20% { transform: translate(1%, 1%); }
+            30% { transform: translate(-1%, 1%); }
+            40% { transform: translate(1%, -1%); }
+            50% { transform: translate(-1%, 0%); }
+            60% { transform: translate(1%, 0%); }
+            70% { transform: translate(0%, 1%); }
+            80% { transform: translate(0%, -1%); }
+            90% { transform: translate(1%, 1%); }
+        }
 
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Inter',sans-serif;
-  overflow-x:hidden;
-}
+        /* Vignette */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
+        }
 
-/* Atmospheric breathing */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:radial-gradient(circle at 50% 40%, rgba(59,10,15,.35), transparent 70%);
-  animation:breathe 10s ease-in-out infinite;
-  pointer-events:none;
-  z-index:0;
-}
+        /* Chromatic Aberration Layer */
+        .chromatic {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 998;
+            mix-blend-mode: screen;
+            opacity: 0;
+            background: 
+                linear-gradient(90deg, rgba(255,0,0,0.01) 0%, transparent 50%, rgba(0,0,255,0.01) 100%);
+            animation: chromaticPulse 8s ease-in-out infinite;
+        }
 
-@keyframes breathe{
-  0%,100%{opacity:.25}
-  50%{opacity:.45}
-}
+        @keyframes chromaticPulse {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
 
-/* Grain */
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  background-image:url("https://grainy-gradients.vercel.app/noise.svg");
-  opacity:.04;
-  pointer-events:none;
-  z-index:1;
-}
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 1px solid rgba(232, 230, 227, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+            mix-blend-mode: difference;
+        }
 
-/* Cursor aura */
-.cursor{
-  width:260px;
-  height:260px;
-  position:fixed;
-  pointer-events:none;
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(59,10,15,.25), transparent 70%);
-  transform:translate(-50%,-50%);
-  z-index:3;
-  mix-blend-mode:screen;
-}
+        .cursor.hovering {
+            width: 40px;
+            height: 40px;
+            border-color: rgba(139, 30, 30, 0.6);
+        }
 
-section{
-  min-height:100vh;
-  padding:140px 15%;
-  position:relative;
-  z-index:2;
-}
+        .cursor-aura {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(59, 10, 15, 0.15) 0%, transparent 70%);
+            transition: opacity 0.5s;
+        }
 
-.hero{
-  text-align:center;
-}
+        /* Canvas for WebGL */
+        #glCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-h1{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(60px,9vw,110px);
-  letter-spacing:12px;
-  margin-bottom:30px;
-}
+        /* Content Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            animation: fadeIn 1.8s var(--ease-weighted) forwards;
+            transform-origin: center top; /* Set transform origin for scale shift */
+        }
 
-h2{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(32px,5vw,52px);
-  letter-spacing:6px;
-  margin-bottom:50px;
-}
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
 
-p{
-  max-width:720px;
-  color:var(--muted);
-  font-size:clamp(18px,1.4vw,20px);
-  line-height:1.9;
-  margin-bottom:28px;
-  opacity:0;
-  transform:translateY(40px);
-}
+        /* Breathing Background */
+        .breathing-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 50% 50%, rgba(59, 10, 15, 0.08) 0%, transparent 60%);
+            z-index: 0;
+            animation: breathe 12s ease-in-out infinite;
+        }
 
-.identity{
-  text-align:center;
-}
+        @keyframes breathe {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: scale(1.05);
+                opacity: 1;
+            }
+        }
 
-.button{
-  display:inline-block;
-  margin-top:40px;
-  padding:14px 48px;
-  border:1px solid rgba(59,10,15,.8);
-  letter-spacing:4px;
-  text-decoration:none;
-  color:var(--text);
-  transition:all .4s ease;
-}
+        /* Vertical Gradient Banding */
+        .gradient-banding {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 2px,
+                rgba(255, 255, 255, 0.005) 2px,
+                rgba(255, 255, 255, 0.005) 4px
+            );
+        }
 
-.button:hover{
-  background:rgba(59,10,15,.15);
-  transform:translateY(-2px);
-}
-</style>
+        /* Sections */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8vh 5vw;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: rgba(232, 230, 227, 0.15);
+            border-radius: 50%;
+            animation: particleFloat 20s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            perspective: 1000px;
+            padding-top: 20vh; /* Give more space above the hero */
+            padding-bottom: 20vh;
+        }
+
+        .hero-title {
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 100;
+            letter-spacing: 0.5em;
+            margin-left: 0.5em;
+            opacity: 0;
+            filter: blur(20px);
+            animation: titleReveal 2s var(--ease-heavy) 0.5s forwards;
+            transform: translateZ(0);
+        }
+
+        @keyframes titleReveal {
+            to {
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        .hero-tagline {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            color: var(--text-muted);
+            letter-spacing: 0.3em;
+            margin-top: 3vh;
+            opacity: 0;
+            animation: fadeUp 1.5s var(--ease-weighted) 1.5s forwards;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-ign {
+            margin-top: 8vh;
+            opacity: 0;
+            animation: fadeUp 1.5s var(--ease-weighted) 2s forwards;
+        }
+
+        .hero-ign span {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            margin: 0.5vh 0;
+        }
+
+        .hero-ign .value {
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 100;
+            letter-spacing: 0.3em;
+            margin-bottom: 4vh;
+            text-transform: uppercase;
+            position: relative;
+            cursor: default;
+            transition: all 0.3s var(--ease-weighted);
+        }
+
+        .section-title:hover {
+            color: rgba(139, 30, 30, 0.5);
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--text-primary);
+            opacity: 0;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            transition: opacity 0.1s;
+        }
+
+        .section-title.glitch:hover::before {
+            animation: microGlitch 0.15s steps(2) forwards;
+        }
+
+        @keyframes microGlitch {
+            0% { opacity: 0; transform: translateX(0); }
+            25% { opacity: 0.3; transform: translateX(-2px); }
+            50% { opacity: 0; transform: translateX(2px); }
+            75% { opacity: 0.2; transform: translateX(-1px); }
+            100% { opacity: 0; transform: translateX(0); }
+        }
+
+        /* Content Paragraphs */
+        .content-block {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .content-block p {
+            font-size: clamp(1rem, 1.5vw, 1.1rem);
+            line-height: 2;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 2vh;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s var(--ease-heavy), transform 1.2s var(--ease-heavy);
+        }
+
+        .content-block p.visible {
+            animation: revealText 1.2s var(--ease-heavy) forwards;
+        }
+
+        @keyframes revealText {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Dynamic delays for sequential reveal */
+        .content-block:nth-of-type(1) p:nth-child(1) { animation-delay: 0.2s; }
+        .content-block:nth-of-type(1) p:nth-child(2) { animation-delay: 0.4s; }
+        .content-block:nth-of-type(1) p:nth-child(3) { animation-delay: 0.6s; }
+        .content-block:nth-of-type(1) p:nth-child(4) { animation-delay: 0.8s; }
+        .content-block:nth-of-type(1) p:nth-child(5) { animation-delay: 1.0s; }
+        .content-block:nth-of-type(1) p:nth-child(6) { animation-delay: 1.2s; }
+
+        .content-block:nth-of-type(2) p:nth-child(1) { animation-delay: 0.2s; }
+        .content-block:nth-of-type(2) p:nth-child(2) { animation-delay: 0.4s; }
+        .content-block:nth-of-type(2) p:nth-child(3) { animation-delay: 0.6s; }
+        .content-block:nth-of-type(2) p:nth-child(4) { animation-delay: 0.8s; }
+        .content-block:nth-of-type(2) p:nth-child(5) { animation-delay: 1.0s; }
+
+        .content-block:nth-of-type(3) p:nth-child(1) { animation-delay: 0.2s; }
+        .content-block:nth-of-type(3) p:nth-child(2) { animation-delay: 0.4s; }
+        .content-block:nth-of-type(3) p:nth-child(3) { animation-delay: 0.6s; }
+        .content-block:nth-of-type(3) p:nth-child(4) { animation-delay: 0.8s; }
+        .content-block:nth-of-type(3) p:nth-child(5) { animation-delay: 1.0s; }
+        .content-block:nth-of-type(3) p:nth-child(6) { animation-delay: 1.2s; }
+        .content-block:nth-of-type(3) p:nth-child(7) { animation-delay: 1.4s; }
+
+
+        /* Identity Section */
+        .identity {
+            padding-bottom: 15vh; /* Ensure button isn't cut off */
+        }
+        .identity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 3vh;
+            margin-bottom: 5vh;
+            opacity: 0;
+            animation: fadeUp 1.5s var(--ease-weighted) 0.5s forwards;
+        }
+
+        .identity-item {
+            text-align: center;
+        }
+
+        .identity-item span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5vh;
+        }
+
+        .identity-item .value {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        /* Enter Button */
+        .enter-btn {
+            position: relative;
+            padding: 1.5vh 4vw;
+            background: transparent;
+            border: 1px solid rgba(139, 30, 30, 0.4);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            cursor: none;
+            transition: all 0.35s var(--ease-weighted);
+            opacity: 0;
+            animation: fadeUp 1.5s var(--ease-weighted) 1s forwards;
+        }
+
+        .enter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(139, 30, 30, 0.1);
+            opacity: 0;
+            transition: opacity 0.35s var(--ease-weighted);
+        }
+
+        .enter-btn:hover {
+            border-color: rgba(139, 30, 30, 0.8);
+            transform: translateY(-2px);
+            /* Subtle glow/depth shift instead of heavy shadow */
+            box-shadow: 0 0 30px rgba(139, 30, 30, 0.15), inset 0 0 20px rgba(139, 30, 30, 0.1);
+        }
+
+        .enter-btn:hover::before {
+            opacity: 1;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 5vh;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            opacity: 0;
+            animation: fadeIn 2s var(--ease-weighted) 3s forwards, pulse 3s ease-in-out 5s infinite;
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--text-muted), transparent);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+            0%, 100% { transform: scaleY(1); opacity: 0.3; }
+            50% { transform: scaleY(1.5); opacity: 0.8; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                letter-spacing: 0.2em;
+                margin-left: 0.2em;
+            }
+            
+            section {
+                padding: 5vh 5vw;
+            }
+            
+            .content-block {
+                max-width: 100%;
+            }
+        }
+
+        /* Section Transition Overlay (Cross-fade simulation by using opacity/scale on container) */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s var(--ease-heavy);
+        }
+
+        .transition-overlay.active {
+            opacity: 1;
+        }
+    </style>
 </head>
-
 <body>
+    <canvas id="glCanvas"></canvas>
+    
+    <div class="breathing-bg"></div>
+    <div class="gradient-banding"></div>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <div class="chromatic"></div>
+    <div class="particles" id="particles"></div>
+    
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-aura" id="cursorAura"></div>
+    
+    <div class="transition-overlay" id="transitionOverlay"></div>
+    
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <h1 class="hero-title">HEAVENLY</h1>
+            <p class="hero-tagline">You're already inside it.</p>
+            <div class="hero-ign">
+                <span>IGN <span class="value">LigmaFire</span></span>
+                <span>Playstyle <span class="value">Undefined</span></span>
+            </div>
+        </section>
 
-<div class="cursor"></div>
+        <!-- Pressure Section -->
+        <section class="content" id="pressure">
+            <h2 class="section-title glitch" data-hover>Pressure</h2>
+            <div class="content-block">
+                <p>You won’t lose to mechanics.</p>
+                <p>You’ll lose to assumption.</p>
+                <p>He studies entry points.</p>
+                <p>Every action narrows your options.</p>
+                <p>Spacing. Timing. Micro-adjustments.</p>
+                <p>The outcome settles before the exchange begins.</p>
+            </div>
+        </section>
 
-<section class="hero">
-  <h1>HEAVENLY</h1>
-  <p>You're already inside it.</p>
-  <p>IGN — LigmaFire</p>
-  <p>Playstyle — Undefined</p>
-</section>
+        <!-- Control Section -->
+        <section class="content" id="control">
+            <h2 class="section-title glitch" data-hover>Control</h2>
+            <div class="content-block">
+                <p>You believe you're adapting.</p>
+                <p>You aren’t.</p>
+                <p>The tempo fractures.</p>
+                <p>Your rhythm collapses before your aim does.</p>
+                <p>This isn’t speed.</p>
+                <p>It’s structural dominance.</p>
+            </div>
+        </section>
 
-<section>
-  <h2>PRESSURE</h2>
-  <p>You won’t lose to mechanics.</p>
-  <p>You’ll lose to assumption.</p>
-  <p>He studies entry points.</p>
-  <p>Every action narrows your options.</p>
-  <p>Spacing. Timing. Micro-adjustments.</p>
-  <p>It already resolved.</p>
-</section>
+        <!-- Fluid Adaptation Section -->
+        <section class="content" id="fluid">
+            <h2 class="section-title glitch" data-hover>Fluid Adaptation</h2>
+            <div class="content-block">
+                <p>No visible adjustment.</p>
+                <p>Only recalibration.</p>
+                <p>Frame by frame.</p>
+                <p>You won’t see the shift.</p>
+                <p>You’ll feel it.</p>
+                <p>And when you recognize it —</p>
+                <p>the margin is gone.</p>
+            </div>
+        </section>
 
-<section>
-  <h2>CONTROL</h2>
-  <p>You believe you're adapting.</p>
-  <p>You aren’t.</p>
-  <p>The tempo fractures.</p>
-  <p>Your rhythm collapses before your aim does.</p>
-  <p>This isn’t about speed.</p>
-  <p>It’s about removing certainty.</p>
-</section>
+        <!-- Identity Section -->
+        <section class="identity" id="identity">
+            <h2 class="section-title" data-hover>Identity</h2>
+            <div class="identity-grid">
+                <div class="identity-item">
+                    <span>Alias</span>
+                    <span class="value">Heavenly</span>
+                </div>
+                <div class="identity-item">
+                    <span>Real Name</span>
+                    <span class="value">Kush Bugga</span>
+                </div>
+                <div class="identity-item">
+                    <span>Discord</span>
+                    <span class="value">itz_crime_9</span>
+                </div>
+            </div>
+            <button class="enter-btn">ENTER THE REALM</button>
+        </section>
+    </div>
+    
+    <div class="scroll-indicator"></div>
 
-<section class="identity">
-  <h2>IDENTITY</h2>
-  <p>Alias — Heavenly</p>
-  <p>Real Name — Kush Bugga</p>
-  <p>Discord — itz_crime_9</p>
-  <a href="#" class="button">ENTER THE REALM</a>
-</section>
-
-<script>
-gsap.registerPlugin(ScrollTrigger);
-
-/* Cursor */
-const cursor=document.querySelector(".cursor");
-document.addEventListener("mousemove",e=>{
-  gsap.to(cursor,{
-    x:e.clientX,
-    y:e.clientY,
-    duration:.3,
-    ease:"power2.out"
-  });
-});
-
-/* Cinematic intro */
-gsap.from("h1",{
-  opacity:0,
-  y:80,
-  duration:2,
-  ease:"power4.out"
-});
-
-/* Scroll reveal */
-gsap.utils.toArray("p").forEach((el)=>{
-  gsap.to(el,{
-    opacity:1,
-    y:0,
-    duration:1.6,
-    ease:"power3.out",
-    scrollTrigger:{
-      trigger:el,
-      start:"top 85%"
-    }
-  });
-});
-
-/* Parallax depth */
-gsap.to("body::before",{
-  opacity:.5,
-  duration:10,
-  repeat:-1,
-  yoyo:true
-});
-</script>
-
-</body>
-</html>
+    <script>
+        // WebGL Sh
