@@ -1,210 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HEAVENLY - Simplified</title>
-    <style>
-        :root {
-            --bg-primary: #0a0a0e;
-            --text-primary: #e0e0e0;
-            --text-muted: #aaaaaa;
-            --accent: #a83232;
-            --ease-fast: cubic-bezier(0.4, 0, 0.2, 1);
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HEAVENLY — Minimal</title>
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --bg-soft:#0f1218;
+      --ink:#e8e9ea;
+      --muted:#a7adb5;
+      --accent:#c23b3b;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:14px;
+      --e: cubic-bezier(.22,1,.36,1);
+    }
 
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 1.5s var(--ease-fast);
-        }
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
+    /* Layout */
+    body{
+      font-family: ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 800px at 50% -10%, rgba(194,59,59,.12), transparent 60%),
+        linear-gradient(180deg, #0b0d12, #0a0c11 60%, #080a0e);
+      color:var(--ink);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:min(6vh,48px) min(4vw,28px);
+    }
 
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            letter-spacing: 0.3em;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
+    .wrap{
+      width:min(92vw, 780px);
+      background:linear-gradient(180deg, var(--bg-soft), #0b0f15);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:clamp(18px, 3.2vw, 28px);
+    }
 
-        .hero-tagline {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            letter-spacing: 0.1em;
-            margin-bottom: 30px;
-        }
+    /* Hero */
+    .hero{
+      text-align:center;
+      margin-bottom:clamp(24px,5vh,40px);
+    }
+    .title{
+      font-weight:800;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-size:clamp(28px, 10vw, 56px);
+      line-height:1.1;
+    }
+    .tag{
+      margin-top:.6rem;
+      color:var(--muted);
+      letter-spacing:.08em;
+      font-size:clamp(13px, 2.6vw, 16px);
+    }
 
-        .section-title {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin-top: 50px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 2px;
-            background: var(--accent);
-            margin: 5px auto 0;
-        }
+    /* Sections */
+    section{margin:clamp(24px,5vh,44px) 0}
+    .h2{
+      font-size:clamp(18px, 4.4vw, 26px);
+      font-weight:700;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-bottom:14px;
+      color:var(--accent);
+      text-align:center;
+    }
 
-        .content-block p {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-            transition: opacity 0.5s var(--ease-fast), transform 0.5s var(--ease-fast);
-            opacity: 0;
-            transform: translateY(10px);
-        }
+    .block{
+      margin-inline:auto;
+      width:min(65ch, 100%);
+      color:var(--ink);
+    }
+    .block p{
+      margin:.6rem 0;
+      color:var(--muted);
+      text-wrap:balance;
+      transition:opacity .6s var(--e), transform .6s var(--e);
+      /* Visible by default; JS adds .js to enable the small reveal effect safely */
+      opacity:1; transform:none;
+    }
+    .js .block p{ opacity:0; transform:translateY(10px) }
+    .js .block p.show{ opacity:1; transform:translateY(0) }
 
-        .content-block p.visible {
-            opacity: 1;
-            transform: translateY(0);
-            color: var(--text-primary); /* Text changes color when revealed */
-        }
+    /* Identity grid */
+    .id-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:10px;
+      width:min(65ch,100%);
+      margin:14px auto 0;
+    }
+    .id{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:10px;
+      padding:10px 12px;
+      text-align:center;
+    }
+    .id .label{
+      font-size:12px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .id .val{
+      display:block;
+      margin-top:4px;
+      font-weight:600;
+    }
 
-        .identity-grid {
-            display: flex;
-            justify-content: space-around;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
+    /* Button */
+    .btn{
+      display:inline-block;
+      margin:18px auto 0;
+      padding:12px 22px;
+      border-radius:999px;
+      background:var(--accent);
+      color:white;
+      border:none;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-weight:700;
+      font-size:13px;
+      cursor:pointer;
+      transition:transform .15s var(--e), filter .2s var(--e);
+    }
+    .btn:active{ transform:translateY(1px) }
+    .btn:hover{ filter:brightness(1.05) }
 
-        .identity-item {
-            margin: 10px;
-            text-align: center;
-        }
-
-        .identity-item .label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .identity-item .value {
-            display: block;
-            font-size: 1.1rem;
-            color: var(--text-primary);
-        }
-
-        .enter-btn {
-            padding: 10px 25px;
-            background: var(--accent);
-            border: none;
-            color: var(--bg-primary);
-            font-size: 0.9rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background 0.3s var(--ease-fast), transform 0.1s;
-            margin-top: 30px;
-        }
-
-        .enter-btn:hover {
-            background: #c44848;
-            transform: translateY(-1px);
-        }
-    </style>
+    /* Accessibility: reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .js .block p{ transition:none }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1 class="hero-title">HEAVENLY</h1>
-            <p class="hero-tagline">You're already inside it.</p>
-            <div class="identity-grid" style="margin-bottom: 20px;">
-                <div class="identity-item">
-                    <span class="label">IGN</span>
-                    <span class="value">LigmaFire</span>
-                </div>
-                <div class="identity-item">
-                    <span class="label">Playstyle</span>
-                    <span class="value">Undefined</span>
-                </div>
-            </div>
-            <button class="enter-btn">ENTER</button>
-        </section>
+  <main class="wrap">
+    <header class="hero">
+      <h1 class="title">HEAVENLY</h1>
+      <p class="tag">You're already inside it.</p>
+    </header>
 
-        <!-- Content Sections (Simplified Blocks) -->
-        <section class="pressure">
-            <h2 class="section-title">Pressure</h2>
-            <div class="content-block" id="pressure-block">
-                <p>You won’t lose to mechanics.</p>
-                <p>You’ll lose to assumption.</p>
-                <p>Every action narrows your options.</p>
-            </div>
-        </section>
+    <section>
+      <h2 class="h2">Pressure</h2>
+      <div class="block">
+        <p>You won’t lose to mechanics.</p>
+        <p>You’ll lose to assumption.</p>
+        <p>He studies entry points.</p>
+        <p>Every action narrows your options.</p>
+        <p>Spacing. Timing. Micro-adjustments.</p>
+        <p>The outcome settles before the exchange begins.</p>
+      </div>
+    </section>
 
-        <section class="control">
-            <h2 class="section-title">Control</h2>
-            <div class="content-block" id="control-block">
-                <p>You believe you're adapting.</p>
-                <p>You aren’t.</p>
-                <p>It’s structural dominance.</p>
-            </div>
-        </section>
+    <section>
+      <h2 class="h2">Control</h2>
+      <div class="block">
+        <p>You believe you're adapting.</p>
+        <p>You aren’t.</p>
+        <p>The tempo fractures.</p>
+        <p>Your rhythm collapses before your aim does.</p>
+        <p>This isn’t speed.</p>
+        <p>It’s structural dominance.</p>
+      </div>
+    </section>
 
-        <section class="fluid">
-            <h2 class="section-title">Fluid Adaptation</h2>
-            <div class="content-block" id="fluid-block">
-                <p>No visible adjustment.</p>
-                <p>Only recalibration.</p>
-                <p>The margin is gone.</p>
-            </div>
-        </section>
+    <section>
+      <h2 class="h2">Fluid Adaptation</h2>
+      <div class="block">
+        <p>No visible adjustment.</p>
+        <p>Only recalibration.</p>
+        <p>Frame by frame.</p>
+        <p>You won’t see the shift.</p>
+        <p>You’ll feel it.</p>
+        <p>And when you recognize it — the margin is gone.</p>
+      </div>
+    </section>
 
-        <!-- Identity Section -->
-        <section class="identity-final">
-            <h2 class="section-title">Identity</h2>
-            <div class="identity-grid">
-                <div class="identity-item">
-                    <span class="label">Alias</span>
-                    <span class="value">Heavenly</span>
-                </div>
-                <div class="identity-item">
-                    <span class="label">Real Name</span>
-                    <span class="value">Kush Bugga</span>
-                </div>
-                <div class="identity-item">
-                    <span class="label">Discord</span>
-                    <span class="value">itz_crime_9</span>
-                </div>
-            </div>
-        </section>
-    </div>
+    <section>
+      <h2 class="h2">Identity</h2>
+      <div class="id-grid">
+        <div class="id">
+          <span class="label">Alias</span>
+          <span class="val">Heavenly</span>
+        </div>
+        <div class="id">
+          <span class="label">Real Name</span>
+          <span class="val">Kush Bugga</span>
+        </div>
+        <div class="id">
+          <span class="label">Discord</span>
+          <span class="val">itz_crime_9</span>
+        </div>
+      </div>
+      <div style="text-align:center">
+        <button class="btn" type="button">Enter the Realm</button>
+      </div>
+    </section>
+  </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Make the body visible now that CSS is loaded
-            document.body.style.opacity = 1;
-            
-            const contentBlocks = document.querySelectorAll('.content-block');
-            
-            contentBlocks.forEach(block => {
-                const paragraphs = block.querySelectorAll('p');
-                paragraphs.forEach((p, i) => {
-                    // Reveal paragraphs sequentially with minimal delay (no IntersectionObserver needed)
-                    setTimeout(() => {
-                        p.classList.add('visible');
-                    }, 100 + (i * 150)); // Start revealing 100ms after load + 150ms step
-                });
-            });
-        });
-    </script>
+  <script>
+    // Safe, compact reveal: content is visible without JS. JS only adds a gentle fade-in.
+    document.documentElement.classList.add('js');
+    const blocks = Array.from(document.querySelectorAll('.block'));
+
+    function revealVisibles(){
+      const vh = window.innerHeight || 0;
+      blocks.forEach(block=>{
+        const ps = block.querySelectorAll('p');
+        const rect = block.getBoundingClientRect();
+        const visible = rect.top < vh * 0.9 && rect.bottom > 0;
+        if(visible){
+          ps.forEach((p,i)=> setTimeout(()=> p.classList.add('show'), i*120));
+        }
+      });
+    }
+
+    // Initial and on scroll/resize
+    revealVisibles();
+    addEventListener('scroll', revealVisibles, {passive:true});
+    addEventListener('resize', revealVisibles);
+  </script>
 </body>
 </html>
