@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HEAVENLY</title>
-    <!-- Open Graph Meta Tags based on the spirit of the image content -->
+    <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Heavenly - You're already inside it." />
     <meta property="og:description" content="IGN: LigmaFire | You won't see it coming." />
     <meta property="og:image" content="https://raw.githubusercontent.com/kbugga230209/Heavenly-site/main/kbugga230209.png" />
@@ -32,7 +32,7 @@
         }
 
         body {
-            font-family: 'Courier New', Courier, monospace; /* Keeping monospace for engineered feel */
+            font-family: 'Courier New', Courier, monospace;
             background: var(--bg-primary);
             color: var(--text-primary);
             overflow-x: hidden;
@@ -205,6 +205,7 @@
             padding: 8vh 5vw;
             position: relative;
             transform-style: preserve-3d;
+            transition: transform 0.1s linear; /* For parallax/ripple effect */
         }
 
         /* Particles */
@@ -245,7 +246,7 @@
         .hero {
             text-align: center;
             perspective: 1000px;
-            padding-top: 20vh; /* Give more space above the hero */
+            padding-top: 20vh;
             padding-bottom: 20vh;
         }
 
@@ -376,32 +377,9 @@
             }
         }
         
-        /* Dynamic delays for sequential reveal */
-        .content-block:nth-of-type(1) p:nth-child(1) { animation-delay: 0.2s; }
-        .content-block:nth-of-type(1) p:nth-child(2) { animation-delay: 0.4s; }
-        .content-block:nth-of-type(1) p:nth-child(3) { animation-delay: 0.6s; }
-        .content-block:nth-of-type(1) p:nth-child(4) { animation-delay: 0.8s; }
-        .content-block:nth-of-type(1) p:nth-child(5) { animation-delay: 1.0s; }
-        .content-block:nth-of-type(1) p:nth-child(6) { animation-delay: 1.2s; }
-
-        .content-block:nth-of-type(2) p:nth-child(1) { animation-delay: 0.2s; }
-        .content-block:nth-of-type(2) p:nth-child(2) { animation-delay: 0.4s; }
-        .content-block:nth-of-type(2) p:nth-child(3) { animation-delay: 0.6s; }
-        .content-block:nth-of-type(2) p:nth-child(4) { animation-delay: 0.8s; }
-        .content-block:nth-of-type(2) p:nth-child(5) { animation-delay: 1.0s; }
-
-        .content-block:nth-of-type(3) p:nth-child(1) { animation-delay: 0.2s; }
-        .content-block:nth-of-type(3) p:nth-child(2) { animation-delay: 0.4s; }
-        .content-block:nth-of-type(3) p:nth-child(3) { animation-delay: 0.6s; }
-        .content-block:nth-of-type(3) p:nth-child(4) { animation-delay: 0.8s; }
-        .content-block:nth-of-type(3) p:nth-child(5) { animation-delay: 1.0s; }
-        .content-block:nth-of-type(3) p:nth-child(6) { animation-delay: 1.2s; }
-        .content-block:nth-of-type(3) p:nth-child(7) { animation-delay: 1.4s; }
-
-
         /* Identity Section */
         .identity {
-            padding-bottom: 15vh; /* Ensure button isn't cut off */
+            padding-bottom: 15vh;
         }
         .identity-grid {
             display: grid;
@@ -462,7 +440,6 @@
         .enter-btn:hover {
             border-color: rgba(139, 30, 30, 0.8);
             transform: translateY(-2px);
-            /* Subtle glow/depth shift instead of heavy shadow */
             box-shadow: 0 0 30px rgba(139, 30, 30, 0.15), inset 0 0 20px rgba(139, 30, 30, 0.1);
         }
 
@@ -516,7 +493,7 @@
             }
         }
 
-        /* Section Transition Overlay (Cross-fade simulation by using opacity/scale on container) */
+        /* Section Transition Overlay */
         .transition-overlay {
             position: fixed;
             top: 0;
@@ -625,4 +602,339 @@
     <div class="scroll-indicator"></div>
 
     <script>
-        // WebGL Sh
+        // WebGL Shader Setup
+        const canvas = document.getElementById('glCanvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            if (gl) {
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const vertexShaderSource = `
+            attribute vec2 position;
+            void main() {
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+
+        const fragmentShaderSource = `
+            precision mediump float;
+            uniform float time;
+            uniform vec2 resolution;
+            
+            void main() {
+                vec2 uv = gl_FragCoord.xy / resolution;
+                float dist = distance(uv, vec2(0.5));
+                
+                /* Subtle wave distortion based on distance and time, minimal influence */
+                float wave = sin(dist * 15.0 - time * 0.5) * 0.0005; 
+                
+                /* Chromatic shift simulation using color offsets */
+                vec3 color = vec3(
+                    0.02 * wave + 0.01,
+                    0.01,
+                    -0.02 * wave + 0.01
+                );
+                
+                vec3 finalColor = mix(vec3(0.02, 0.02, 0.03), color, 0.5);
+
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+
+        function createShader(gl, type, source) {
+    const shader = gl.createShader(type);
+
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error("Shader compile error:", gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+        return null;
+    }
+
+    return shader;
+}
+
+function createProgram(gl, vertexShader, fragmentShader) {
+    const program = gl.createProgram();
+
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.error("Program link error:", gl.getProgramInfoLog(program));
+        gl.deleteProgram(program);
+        return null;
+    }
+
+    return program;
+}
+
+let program = null;
+let uTime = null;
+let uResolution = null;
+
+if (gl) {
+    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+    if (vertexShader && fragmentShader) {
+        program = createProgram(gl, vertexShader, fragmentShader);
+
+        if (program) {
+            gl.useProgram(program);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(
+                gl.ARRAY_BUFFER,
+                new Float32Array([
+                    -1, -1,
+                     1, -1,
+                    -1,  1,
+                    -1,  1,
+                     1, -1,
+                     1,  1
+                ]),
+                gl.STATIC_DRAW
+            );
+
+            const aPosition = gl.getAttribLocation(program, "position");
+            gl.enableVertexAttribArray(aPosition);
+            gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+
+            uTime = gl.getUniformLocation(program, "time");
+            uResolution = gl.getUniformLocation(program, "resolution");
+        }
+    }
+}
+
+function renderWebGL(now) {
+    if (!gl || !program) {
+        return;
+    }
+
+    gl.viewport(0, 0, canvas.width, canvas.height);
+
+    if (uTime) {
+        gl.uniform1f(uTime, now * 0.001);
+    }
+
+    if (uResolution) {
+        gl.uniform2f(uResolution, canvas.width, canvas.height);
+    }
+
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    requestAnimationFrame(renderWebGL);
+}
+
+if (gl && program) {
+    requestAnimationFrame(renderWebGL);
+}
+
+/* ------------------------------ */
+/* Ambient particle dust          */
+/* ------------------------------ */
+
+const particlesContainer = document.getElementById("particles");
+
+if (particlesContainer) {
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 20}s`;
+        particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+        particlesContainer.appendChild(particle);
+    }
+}
+
+/* ------------------------------ */
+/* Cursor + aura                 */
+/* ------------------------------ */
+
+const cursor = document.getElementById("cursor");
+const cursorAura = document.getElementById("cursorAura");
+
+const state = {
+    mouseX: window.innerWidth * 0.5,
+    mouseY: window.innerHeight * 0.5,
+    scrollY: 0,
+    ticking: false
+};
+
+document.addEventListener("mousemove", (e) => {
+    state.mouseX = e.clientX;
+    state.mouseY = e.clientY;
+
+    if (cursor) {
+        cursor.style.left = `${state.mouseX}px`;
+        cursor.style.top = `${state.mouseY}px`;
+    }
+
+    if (cursorAura) {
+        cursorAura.style.left = `${state.mouseX}px`;
+        cursorAura.style.top = `${state.mouseY}px`;
+    }
+
+    requestVisualUpdate();
+});
+
+const hoverElements = document.querySelectorAll("button, .section-title");
+
+hoverElements.forEach((el) => {
+    el.addEventListener("mouseenter", () => {
+        if (cursor) {
+            cursor.classList.add("hovering");
+        }
+    });
+
+    el.addEventListener("mouseleave", () => {
+        if (cursor) {
+            cursor.classList.remove("hovering");
+        }
+    });
+});
+
+/* ------------------------------ */
+/* Sequential text reveal         */
+/* ------------------------------ */
+
+const contentBlocks = document.querySelectorAll(".content-block");
+
+function revealBlock(block) {
+    const paragraphs = block.querySelectorAll("p");
+
+    paragraphs.forEach((p, index) => {
+        p.style.animationDelay = `${index * 180}ms`;
+        p.classList.add("visible");
+    });
+}
+
+if ("IntersectionObserver" in window) {
+    const textObserver = new IntersectionObserver(
+        (entries, observer) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+
+                revealBlock(entry.target);
+                observer.unobserve(entry.target);
+            });
+        },
+        {
+            root: null,
+            rootMargin: "0px 0px -10% 0px",
+            threshold: 0.08
+        }
+    );
+
+    contentBlocks.forEach((block) => textObserver.observe(block));
+} else {
+    contentBlocks.forEach((block) => revealBlock(block));
+}
+
+/* ------------------------------ */
+/* Scroll depth + parallax        */
+/* ------------------------------ */
+
+const container = document.querySelector(".container");
+const sections = document.querySelectorAll("section");
+const breathingBg = document.querySelector(".breathing-bg");
+const transitionOverlay = document.getElementById("transitionOverlay");
+
+function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+}
+
+function updateVisuals() {
+    state.scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+    const maxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
+    const progress = clamp(state.scrollY / maxScroll, 0, 1);
+
+    if (container) {
+        const depthScale = clamp(1 - progress * 0.02, 0.98, 1);
+        container.style.transform = `scale(${depthScale})`;
+    }
+
+    sections.forEach((section, index) => {
+        const parallax = state.scrollY * (0.02 + index * 0.002);
+        section.style.transform = `translateY(${-parallax}px)`;
+    });
+
+    if (breathingBg) {
+        breathingBg.style.animationDuration = `${12 - progress * 3}s`;
+    }
+
+    if (cursorAura) {
+        const cx = window.innerWidth * 0.5;
+        const cy = window.innerHeight * 0.5;
+        const dx = state.mouseX - cx;
+        const dy = state.mouseY - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const maxDist = Math.sqrt(cx * cx + cy * cy);
+        const proximity = 1 - clamp(dist / maxDist, 0, 1);
+
+        cursorAura.style.opacity = `${0.12 + proximity * 0.35}`;
+    }
+
+    state.ticking = false;
+}
+
+function requestVisualUpdate() {
+    if (state.ticking) {
+        return;
+    }
+
+    state.ticking = true;
+    requestAnimationFrame(updateVisuals);
+}
+
+window.addEventListener("scroll", requestVisualUpdate, { passive: true });
+window.addEventListener("resize", () => {
+    resizeCanvas();
+    requestVisualUpdate();
+});
+
+/* ------------------------------ */
+/* Button transition              */
+/* ------------------------------ */
+
+const enterBtn = document.querySelector(".enter-btn");
+
+if (enterBtn && transitionOverlay) {
+    enterBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        transitionOverlay.classList.add("active");
+
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+            setTimeout(() => {
+                transitionOverlay.classList.remove("active");
+            }, 850);
+        }, 450);
+    });
+}
+
+/* ------------------------------ */
+/* Initial pass                   */
+/* ------------------------------ */
+
+requestVisualUpdate();
